@@ -8,3 +8,15 @@ for f do
   sed -n "1,250p" "$f"
 done
 ' sh > project_dump.txt
+
+
+Secret file Scanner
+
+
+{
+  echo "===== TRACKED ENV FILES ====="
+  git ls-files | grep -E '(^|/)\.env($|\.|/)' || true
+  echo
+  echo "===== POSSIBLE SECRETS ====="
+  git grep -I -n -E '(sk-[A-Za-z0-9]{20,}|AIza[0-9A-Za-z\-_]{20,}|api[_-]?key|secret|token|authorization)' || true
+} > security_scan.txt
